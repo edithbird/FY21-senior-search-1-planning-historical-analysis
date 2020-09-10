@@ -1,0 +1,105 @@
+---
+title: "FY21 Search 1 Planning Historical Analysis"
+author: "Office of Marketing and Brand Management"
+date: "`sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+```{r}
+library(knitr)
+library(tidyverse)
+```
+
+
+```{r}
+# library(salesforcer)
+# library(knitr)
+# library(RForcecom)
+# username <- "christine.iyer@maine.edu"
+# password <- "1Edithandoliver"
+# securityToken <- "iFhpXgaXnuP3L5PQr69Zw2yOy"
+# instanceURL <- "https://login.salesforce.com/"
+# apiVersion <- "44.0"
+
+#auth <- sf_auth(username = username, password = password, security_token = securityToken,
+#login_url = getOption("https://login.salesforce.com/"))
+
+
+
+# session <- sf_auth(username, password, securityToken, instanceURL, apiVersion)
+# username <- "christine.iyer@maine.edu"
+# password <- "1EdithandoliveriFhpXgaXnuP3L5PQr69Zw2yOy"
+# #securityToken <- ""
+# instanceURL <- "https://na24.salesforce.com/"
+# apiVersion <- "44.0"
+# 
+# 
+
+
+
+#session <- rforcecom.login(username, password, instanceURL,apiVersion  ) 
+
+# my_soql <- sprintf("SELECT Id,
+#                            CreatedDate,
+#                            Email, 
+#                            FirstName, 
+#                            LastName,
+#                            TargetX_SRMb__Status__c, TargetX_SRMb__Student_Type__c,
+#                            TargetX_SRMb__Anticipated_Start_Term__c,
+#                            TargetX_SRMb__Anticipated_Start_Term_Year__c, 
+#                            TargetX_SRMb__Anticipated_Start_Year__c,
+#                            App_Application_Date__c,  
+#                            TargetX_SRMb__Gender__c,  
+#                            TargetX_SRMb__Last_Data_Input_Source__c,                                                                Initial_Source_Date__c, 
+#                            Initial_Referral_Source__c, 
+#                            Recruiting_Category__c,
+#                            Ref__c, 
+#                            Primary_State_Code__c
+#                            
+#                     FROM Contact 
+#                     WHERE TargetX_SRMb__Status__c != 'Lead' 
+#                     AND Recruiting_Category__c != ' '")
+# 
+# queried_records <- sf_query(my_soql)
+```
+
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r load data}
+data <- read.csv("C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Planning_Historical_Analysis/Data/RawDataAllSearch.csv", header = T, stringsAsFactors = F)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+kable(head(data))
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+## Conclusions
+
+* In FY20, traffic to the University's main landing page saw a drop in unique pageviews, down 6.75% from out-of state visitors and down 6% from in-state visitors from FY19. 
+
+* In FY20, traffic from out-of-state visitors to the Office of Admissions' main landing page saw a slight increase in unique pageviews,  up by nearly 1%, while in-state visitors dropped by  18% in the same time period.
+
+#
+
+\href{https://www.wrike.com/open.htm?id=562875559}{{\color{blue}{\underline{Wrike Project Details}}}}
+
+\href{https://github.com/edithbird/FY21-senior-search-1-planning-historical-analysis}{{\color{blue}{\underline{Github Repository}}}}
