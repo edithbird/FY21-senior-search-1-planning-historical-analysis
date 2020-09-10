@@ -72,24 +72,42 @@ library(tidyverse)
 ```
 
 
+## Brief Description
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+As per a request by the VP of Enrollment at the University of Southern Maine (USM), I pulled a historical and updated report of all of the leads and their conversions through the application funnel. 
 
 ```{r load data}
 data <- read.csv("C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Planning_Historical_Analysis/Data/RawDataAllSearch.csv", header = T, stringsAsFactors = F)
 ```
 
-## Including Plots
+```{r fix dates}
+
+```
+
+## Findings
 
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
 kable(head(data))
+names(data)
+dateColumns <- c("Birthdate", "Initial.Source.Date", "Created.Date",                 "Last.Modified.Date", "App.Application.Date", "App.Admit.Date", "App.Deposit.Date" )
+
+Data <- data %>% 
+  mutate_at(
+    vars("Birthdate", "Initial.Source.Date", "Created.Date",                 "Last.Modified.Date", "App.Application.Date", "App.Admit.Date", "App.Deposit.Date"), 
+    as.POSIXct,
+    format = "%m/%d/%Y"
+    )
+Data <- Data %>% 
+  mutate(State = ifelse(Primary.State.Province == "Maine", "In-State", "Out-State")) %>% 
+  group_by(Created.Date, Anticipated.Start.Year, Recruiting.Category, State, Student.Stage, App.Application.Status, Lead.Segment.NRCCUA, Lead.Segment.Cappex, Lead.Segment.College.Board) %>% summarise(n = n())
+kable(head(Data))
+write.csv(Data, "C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Planning_Historical_Analysis/Data/RawDataAllSearch_Tidied_Step_1.csv",row.names = F)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Findings
+
 
 
 ## Conclusions
