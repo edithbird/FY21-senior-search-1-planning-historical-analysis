@@ -1,7 +1,7 @@
 ---
-title: "FY21 Search 1 Planning Historical Analysis"
+title: "FY21 Search 1 Planning: Historical Analysis of Lead Purchases October 2017 - April 2020"
 author: "Office of Marketing and Brand Management"
-date: "`sys.Date()`"
+date: "September 11, 2020"
 output: pdf_document
 ---
 
@@ -74,7 +74,7 @@ library(tidyverse)
 
 ## Brief Description
 
-As per a request by the VP of Enrollment at the University of Southern Maine (USM), I pulled a historical and updated report of all of the leads and their conversions through the application funnel. 
+As requested, I have compiled a historical and updated report of all of the leads and their conversions through the application funnel based on search name purchases between October, 2017 and April, 2020. 
 
 ```{r load data}
 data <- read.csv("C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Planning_Historical_Analysis/Data/RawDataAllSearch.csv", header = T, stringsAsFactors = F)
@@ -84,13 +84,10 @@ data <- read.csv("C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Plann
 
 ```
 
-## Findings
 
-You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-kable(head(data))
-names(data)
+
 dateColumns <- c("Birthdate", "Initial.Source.Date", "Created.Date",                 "Last.Modified.Date", "App.Application.Date", "App.Admit.Date", "App.Deposit.Date" )
 
 Data <- data %>% 
@@ -102,19 +99,68 @@ Data <- data %>%
 Data <- Data %>% 
   mutate(State = ifelse(Primary.State.Province == "Maine", "In-State", "Out-State")) %>% 
   group_by(Created.Date, Anticipated.Start.Year, Recruiting.Category, State, Student.Stage, App.Application.Status, Lead.Segment.NRCCUA, Lead.Segment.Cappex, Lead.Segment.College.Board) %>% summarise(n = n())
-kable(head(Data))
 write.csv(Data, "C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Planning_Historical_Analysis/Data/RawDataAllSearch_Tidied_Step_1.csv",row.names = F)
 ```
 
 ## Findings
 
+```{r}
+newData <- read.csv("C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Planning_Historical_Analysis/Data/RawDataAllSearch_Tidied_Step_2.csv", header = T, stringsAsFactors = F)
+SRData <- newData %>% 
+  filter(Class == "SR") %>% 
+  group_by(Created.Date,Vendor, Class) %>% 
+  summarise(Leads = sum(Lead), 
+            Inquiry = sum(Inquiry), 
+            Applied = sum(Applied), 
+            Admitted = sum(Admitted), 
+            Confirmed = sum(Confirmed), 
+            Enrolled = sum(Enrolled))
+JRData <- newData %>% 
+  filter(Class == "JR") %>% 
+  group_by(Created.Date,Vendor, Class) %>% 
+  summarise(Leads = sum(Lead), 
+            Inquiry = sum(Inquiry), 
+            Applied = sum(Applied), 
+            Admitted = sum(Admitted), 
+            Confirmed = sum(Confirmed), 
+            Enrolled = sum(Enrolled))
+bothData <- rbind.data.frame(SRData, JRData)
+# write.csv(bothData, "C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Planning_Historical_Analysis/Data/RawDataAllSearch_Tidied_Step_3.csv", row.names = F)
+```
 
+### Senior Lead Performance
+
+```{r}
+newestData <- read.csv("C:/Users/christine.iyer/Box/FY21_Search/FY21_SR_Search_1_Planning_Historical_Analysis/Data/RawDataAllSearch_Tidied_Step_3.csv", header = T, stringsAsFactors = F)
+newestData <- newestData %>% 
+  mutate(InqYield = paste0(round(Inquiry/Leads*100,2), "%"), 
+         AppYield = paste0(round(Applied/Leads*100, 2), "%"), 
+         #EnrollYield = paste0(round(Enrolled/Leads*100),2, "%"), 
+         Vendor = ifelse(Vendor == "College Board", "CB", 
+                         ifelse(Vendor == "NRCCUA", "NC", "Both")), 
+         Leads = prettyNum(Leads, big.mark = ","),
+         Inquiry = prettyNum(Inquiry, big.mark = ","), 
+         Applied = prettyNum(Applied, big.mark = ","),) 
+
+newestData[newestData == 0] <- "~"
+
+kable(newestData %>% filter(Class == "SR")
+      )
+
+
+```
+
+### Junior Lead Performance
+
+```{r}
+kable(newestData %>% 
+        filter(Class == "JR"))
+```
 
 ## Conclusions
 
-* In FY20, traffic to the University's main landing page saw a drop in unique pageviews, down 6.75% from out-of state visitors and down 6% from in-state visitors from FY19. 
+* FY20 Senior search names don't have data beyond application; however, the inquiry and application data was updated 9/11/20. FY20 Junior search names reflect their current status. The most recent campaign concluded on June 25, 2020. 
 
-* In FY20, traffic from out-of-state visitors to the Office of Admissions' main landing page saw a slight increase in unique pageviews,  up by nearly 1%, while in-state visitors dropped by  18% in the same time period.
 
 #
 
